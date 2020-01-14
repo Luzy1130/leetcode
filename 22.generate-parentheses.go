@@ -33,8 +33,48 @@
  */
 
 // @lc code=start
-func generateParenthesis(n int) []string {
+var Symble []rune = []rune{'(', ')'}
+
+// 回溯法： DFS
+func generateParentesisImpl(n int, lNum int) []string {
     var res []string
+    if n == 0 && lNum == 0 {
+        return res
+    }
+
+    for i := 0; i < 2; i++ {
+        tmpN := n
+        tmpLNum := lNum
+        c := Symble[i]
+        if c == '(' {
+            if n == 0 {
+                continue
+            }
+            tmpLNum++
+            tmpN--
+        } else {
+            if tmpLNum == 0 {
+                continue
+            }
+            tmpLNum--
+        }
+
+        tmp := generateParentesisImpl(tmpN, tmpLNum)
+        if len(tmp) > 0 {
+            for _, v := range tmp {
+                res = append(res, string(c)+v)
+            }
+        } else {
+            res = append(res, string(c))
+        }
+    }
+    return res
+}
+
+func generateParenthesis(n int) []string {
+    res := generateParentesisImpl(n, 0)
+
+    return res
 }
 // @lc code=end
 
