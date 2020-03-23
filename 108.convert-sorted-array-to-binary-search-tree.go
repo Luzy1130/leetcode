@@ -13,7 +13,7 @@
  * Total Submissions: 602.6K
  * Testcase Example:  '[-10,-3,0,5,9]'
  *
- * Given an array where elements are sorted in ascending ordemodels/product_merchant_price.gor, convert it to a
+ * Given an array where elements are sorted in ascending order, convert it to a
  * height balanced BST.
  * 
  * For this problem, a height-balanced binary tree is defined as a binary tree
@@ -46,39 +46,30 @@
  *     Right *TreeNode
  * }
  */
+// package main
+// import "fmt"
 
-func insertTree(node *TreeNode, root **Tree, heigt) int {
-	
-}
-
-func convertSortedArrayToBST(nums []int) *TreeNode {
-	root := new(TreeNode)
-	root.Val = nums[0]
-	leftHeight := 0		// 记录左子树高度
-	rightHeight := 0	// 记录右子树高度
-	for i := 1; i < len(nums); i++ {
-		node := new(TreeNode)
-		node.Val = nums[1]
-
-		if node.Val < root.Val {
-			insertTree(node, root, leftHeight)
-		} else {
-			insertTree(node, root, rightHeight)
-		}
-	}
-
-	return root
-}
-
- // 平衡二叉树构造
-func sortedArrayToBST(nums []int) *TreeNode {
-    if len(nums) == 0 {
+func sortedArrayToBSTImpl(nums []int, low, high int) *TreeNode {
+	if low > high {
 		return nil
 	}
 
-	result := convertSortedArrayToBST(nums)
+	mid := (low+high) / 2
+	left := sortedArrayToBSTImpl(nums, low, mid-1)
+	right := sortedArrayToBSTImpl(nums, mid+1, high)
 
-	return result
+	root := &TreeNode{nums[mid], left, right}
+	return root
 }
+
+func sortedArrayToBST(nums []int) *TreeNode {
+    return sortedArrayToBSTImpl(nums, 0, len(nums)-1);
+}
+
+// func main() {
+// 	input := []int{-10, -3, 0, 5, 9}
+// 	res := sortedArrayToBST(input)
+// 	fmt.Println(res)
+// }
 // @lc code=end
 
